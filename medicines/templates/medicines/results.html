@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results for {{ name }}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #e0f7fa; /* Light cyan background for the body */
+            font-family: 'Times New Roman', Times, serif; /* Font style for the page */
+            color: #333; /* Default text color */
+        }
+
+        h1 {
+            color: #007bff; /* Primary color for headings */
+            text-shadow: 0 2px 4px rgba(0, 123, 255, 0.2); /* Soft shadow for depth */
+        }
+
+        .card {
+            border: none; /* Remove default border */
+            border-radius: 15px; /* Rounded corners for cards */
+            background-color: #ffffff; /* White background for the card */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+        }
+
+        .card:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+        }
+
+        .highlight {
+            background-color: #e9f7fa; /* Light blue background for highlighted items */
+            border-left: 4px solid #007bff; /* Blue left border */
+        }
+
+        .btn-primary {
+            background-color: #007bff; /* Primary button color */
+            border-radius: 50px; /* Rounded button edges */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+            transform: scale(1.05); /* Slightly enlarge button on hover */
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 15px; /* Add padding on small screens */
+            }
+
+            .card {
+                margin: 20px 0; /* Margin for the card on small screens */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Results for <span class="text-primary">{{ name }}</span></h1>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="mb-0">Medicines Found:</h2>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for medicine in medicines %}
+                    <li class="list-group-item highlight">
+                        {{ medicine.name }} - Low Price: <strong>${{ medicine.low_price }}</strong>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">No medicines found.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="mb-0">Alternate Medicines:</h2>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for alternative in alternatives %}
+                    <li class="list-group-item highlight">
+                        {{ alternative.name }} - Low Price: <strong>${{ alternative.low_price }}</strong>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">No alternate medicines found.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="text-center">
+            <a href="{% url 'home' %}" class="btn btn-primary btn-lg">Back to Home</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

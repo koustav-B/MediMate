@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health App Form</title>
+    <!-- Bootstrap CSS (Bootstrap 5) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #e0f7fa; /* Light cyan background for a health app */
+            font-family: 'Times New Roman', Times, serif; /* Font style for the page */
+            color: #333; /* Default text color */
+            height: 100vh; /* Full height for body */
+            display: flex;
+            align-items: center; /* Center align vertically */
+            justify-content: center; /* Center align horizontally */
+            padding: 20px; /* Padding for body */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px; /* Maximum width for the container */
+            padding: 20px; /* Padding for the container */
+            background-color: #ffffff; /* White background for the container */
+            border-radius: 15px; /* Rounded corners */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+        }
+
+        h1 {
+            text-align: center; /* Center align heading */
+            margin-bottom: 30px; /* Space below the heading */
+            color: #00796b; /* Teal color for heading */
+            font-family: 'Times New Roman', Times, serif; /* Font style for heading */
+        }
+
+        .form-group {
+            margin-bottom: 15px; /* Space below the form group */
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            border-radius: 25px; /* Rounded input corners */
+            border: 2px solid #00796b; /* Teal border */
+            padding: 10px; /* Padding for input fields */
+            transition: border-color 0.3s; /* Smooth transition for border color */
+            width: 100%; /* Full width input fields */
+            font-family: 'Times New Roman', Times, serif; /* Font style for input fields */
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #004d40; /* Darker teal on focus */
+            outline: none; /* Remove default outline */
+        }
+
+        .btn-primary {
+            background-color: #00796b; /* Teal button */
+            border: none; /* Remove border */
+            transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+            color: white; /* White text color */
+            border-radius: 25px; /* Rounded button corners */
+            width: 100%; /* Full width button */
+            font-family: 'Times New Roman', Times, serif; /* Font style for button */
+        }
+
+        .btn-primary:hover {
+            background-color: #004d40; /* Darker teal on hover */
+            transform: scale(1.05); /* Slightly enlarge button on hover */
+        }
+
+        #loadingMessage {
+            display: none; /* Hide loading message initially */
+            color: #28a745; /* Green loading message */
+            margin-top: 10px;
+            text-align: center; /* Center align loading message */
+            font-family: 'Times New Roman', Times, serif; /* Font style for loading message */
+        }
+
+        /* Media query for responsiveness */
+        @media (max-width: 576px) {
+            .container {
+                margin: 0 10px; /* Margin for small screens */
+            }
+        }
+    </style>
+    <script>
+        function validateForm(event) {
+            const formInputs = document.querySelectorAll('input');
+            let isEmpty = false;
+
+            // Check if any input fields are empty
+            formInputs.forEach(input => {
+                if (input.value.trim() === '') {
+                    isEmpty = true;
+                    input.classList.add('error'); // Add error class
+                } else {
+                    input.classList.remove('error'); // Remove error class
+                }
+            });
+
+            if (isEmpty) {
+                event.preventDefault(); // Prevent form submission
+                alert('Please fill in all fields before submitting the form.');
+            } else {
+                document.getElementById('loadingMessage').style.display = 'block'; // Show loading message
+            }
+        }
+
+        // Reset form and clear loading message
+        function resetForm() {
+            const form = document.querySelector('form');
+            form.reset();
+            document.getElementById('loadingMessage').style.display = 'none'; // Hide loading message
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => input.classList.remove('error')); // Remove error classes
+        }
+
+        // Real-time feedback on input
+        function checkInput() {
+            const input = this;
+            if (input.value.trim() === '') {
+                input.classList.add('error');
+            } else {
+                input.classList.remove('error');
+            }
+        }
+
+        // Attach event listeners for real-time feedback
+        document.addEventListener('DOMContentLoaded', function () {
+            const formInputs = document.querySelectorAll('input');
+            formInputs.forEach(input => {
+                input.addEventListener('input', checkInput);
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1>Find Low Price Medicines</h1>
+        <form method="POST" action="{% url 'search' %}" onsubmit="validateForm(event)">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button> <!-- Reset button -->
+            <p id="loadingMessage">Submitting your search, please wait...</p> <!-- Loading message -->
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
